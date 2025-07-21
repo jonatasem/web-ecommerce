@@ -49,11 +49,9 @@ Crie um arquivo .env na raiz do seu diretório de projeto e adicione as seguinte
 
 MONGO_URI=mongodb://localhost:27017/ecommerce
 MONGO_DB_NAME=seu_nome_de_banco_de_dados
-JWT_SECRET=sua_chave_secreta_para_jwt
 
 - *MONGO_URI:* Sua string de conexão MongoDB. Se você estiver executando o MongoDB localmente, o padrão geralmente é mongodb://localhost:27017/. Substitua ecommerce pelo nome do seu banco de dados desejado.
 - *MONGO_DB_NAME:* O nome do banco de dados ao qual você deseja se conectar.
-- *JWT_SECRET:* Uma chave secreta usada para assinar e verificar JSON Web Tokens. Gere uma string forte e aleatória para produção.
 
 ### 4. Executar a Aplicação
 
