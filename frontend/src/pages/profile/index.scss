@@ -1,0 +1,138 @@
+.profile-container {
+    padding: 0 1rem;
+
+    .title-profile {
+        margin: 2rem 0  1rem 0;
+    }
+
+    .profile-left {
+        margin: 0 auto;
+        padding: 2rem 0;
+        box-shadow: 1px 1px 5px silver;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-image: linear-gradient(to right, #39b593, #3aa8af);
+        position: relative;
+        color: rgb(39, 37, 37);
+
+        img {
+            width: 250px;
+        }
+
+        h1 {
+            margin: 0 0 1rem 0;
+        }
+
+        button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 0.2rem;
+            background-color: rgb(196, 20, 20);
+            color: white;
+            cursor: pointer;
+            border: transparent;
+
+            &:active {
+                transform: scale(0.98);
+            }
+
+            .icon {
+                margin-left: 0.5rem;
+                font-size: 25px;
+            }
+        }
+    }
+
+.profile-main {
+    display: flex;
+    flex-direction: column; // Coluna para os itens
+    padding: 1rem;
+    background-color: #f8f8f8; // Fundo claro para contraste
+    border-radius: 0.5rem; // Cantos arredondados
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Sombra suave
+
+    .profile-main-layout {
+        background-color: white; // Fundo branco para cada pedido
+        border: 1px solid #ddd; // Borda sutil
+        margin-bottom: 1rem; // Espaçamento entre pedidos
+        padding: 1rem; // Espaçamento interno
+        border-radius: 0.5rem; // Cantos arredondados
+        transition: box-shadow 0.3s; // Transição suave para hover
+
+        &:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); // Sombra mais intensa ao passar o mouse
+        }
+
+        h3 {
+            font-size: 1.2rem; // Tamanho do título do pedido
+            color: #333; // Cor do texto
+            margin: 0.5rem 0; // Margem entre o título e outros elementos
+        }
+
+        h4 {
+            font-size: 1rem; // Tamanho do título do item
+            color: #555; // Cor do texto dos itens
+            margin: 0.3rem 0; // Margem entre o título do item e a quantidade
+        }
+
+        p {
+            font-size: 0.9rem; // Tamanho do texto
+            color: #666; // Cor do texto
+            margin: 0; // Remover margens
+        }
+
+        .item-profile-pending {
+            color: orange; // Cor para status pendente
+            display: flex;
+            align-items: center; // Alinhamento vertical dos ícones
+        }
+
+        .item-profile-completed {
+            color: green; // Cor para status completo
+            display: flex;
+            align-items: center;
+        }
+
+        .item-profile-canceled {
+            color: red; // Cor para status cancelado
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+    .profile-right {
+        padding: 1rem;
+        background-color: #f8f8f8; // Fundo leve
+        border-radius: 0.5rem; // Cantos arredondados
+        text-align: center; // Centralizar texto
+        color: #333; // Cor do texto
+
+        a {
+            color: #007bff; // Cor do link
+            text-decoration: none; // Sem sublinhado
+            font-weight: bold; // Negrito
+
+            &:hover {
+                text-decoration: underline; // Sublinhado no hover
+            }
+        }
+    }
+
+}
+
+@media (max-width:768px) {
+    .profile-container {
+        .profile-left {
+            h1 {
+                padding: 0;
+                text-align: center;
+            }
+        }
+    }
+}

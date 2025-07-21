@@ -1,0 +1,28 @@
+.item-plate {
+    background-color: #ffffff;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 5px #c0c0c08c;
+    min-height: 320px;
+    cursor: pointer;
+
+    &:active {
+        transform: scale(0.98);
+    }
+    
+    img {
+        width: 100%;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    h4 {
+        margin: 1rem;
+    }
+    h3 {
+        margin: 0 1rem 1rem;
+        color: #cf0202;
+    }
+
+}

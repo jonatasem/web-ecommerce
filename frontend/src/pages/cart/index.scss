@@ -1,0 +1,176 @@
+
+//carrinho vazio
+.cart-empty-container {
+    padding: 1rem;
+    text-align: center;
+    margin: 5rem auto;
+
+    img {
+        width: 250px;
+    }
+
+    h1 {
+        margin: 0.5rem 0 0;
+    }
+
+    button {
+        background-color: red;
+        border: transparent;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        margin: 1.5rem 0 1rem 0;
+        cursor: pointer;
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+
+}
+
+//carrinho com item
+.container-cart {
+    padding: 1.5rem;
+
+    div {
+
+        .title-cart {
+            margin-bottom: 1rem;
+        }
+
+        .cart-main {
+            padding: 0 1rem;
+
+            article {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin: 1rem 0;
+
+                .layout-cart-item {
+                    display: flex;
+                }
+
+                img {
+                    width: 150px;
+                    height: 100px;
+                    margin-right: 1.5rem;
+                }
+
+                .ingredient-item {
+                    margin: 0.5rem 0;
+                }
+
+                .container-less-more {
+                    display: flex;
+                    max-width: max-content;
+                    padding: 0.5rem 0;
+
+                    p:first-child {
+                        margin-right: 0.2rem;
+                    }
+
+                    div {
+                        display: flex;
+                        align-items: center;
+                        margin-left: 1rem;
+
+                        button {
+                            font-size: 18px;
+                            border: transparent;
+                            background-color: #eeb2b2c0;
+                            width: 20px;
+                            height: 20px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 0.5rem;
+                            cursor: pointer;
+                            margin: 0 0.5rem 0 0;
+                        }
+
+                    }
+                }
+                .container-remove-cart {
+                    display: flex;
+                    justify-content: end;
+                    width: 100%;
+                    min-width: 100%;
+
+                    button {
+                        padding: 0.8rem 1.2rem;
+                        background-color: red;
+                        color: white;
+                        border: transparent;
+                        border-radius: 0.5rem;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+
+                        &:active {
+                            transform: scale(0.98);
+                        }
+
+                        .icon {
+                            margin-right: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .btn-finally {
+            padding: 0.8rem 1.2rem;
+            background-color: green;
+            color: white;
+            border-radius: 0.5rem;
+            border: transparent;
+            cursor: pointer;
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+    }
+}
+
+@media (max-width:599px) {
+    .container-cart {
+        .cart-main {
+            article {
+                .layout-cart-item {
+                    flex-direction: column;
+
+                    img {
+                        width: 100%;
+                        max-width: 80%;
+                        margin: 0 auto 0.5rem;
+                        height: auto;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width:399px) {
+    .container-cart {
+        .cart-main {
+            article {
+                .layout-cart-item {
+                    flex-direction: column;
+
+                    img {
+                        width: 100%;
+                        max-width: max-content;
+                    }
+                }
+            }
+        }
+    }
+}
