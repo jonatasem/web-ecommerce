@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authServices from '../../services/auth';
+import authServices from '../../hooks/useAuth';
 import Loading from '../../components/loading';
 
+import './index.scss';
 
-// Imagens (Adapte os caminhos ou adicione imgSignup se necessário)
-import imgGoogle from '../../assets/img/login/google.svg';
-import imgFacebook from '../../assets/img/login/facebook.svg';
+
+import imgSignout from '../../assets/img/login/login.png'
 
 // react-icons
 import {
     CiLock,
     CiAt
 } from "react-icons/ci";
-import { FaUser } from "react-icons/fa"; // Para o campo de nome completo
+import { CiUser } from "react-icons/ci"; 
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -42,7 +42,7 @@ export default function SignupPage() {
             return;
         }
 
-        const { confirmPassword, ...dataToSend } = formData; // Remove 'confirmPassword' antes de enviar
+        const { confirmPassword, ...dataToSend } = formData;
 
         const result = await signup(dataToSend);
 
@@ -62,7 +62,7 @@ export default function SignupPage() {
     return (
         <section className="signup-page">
             <article className="signup-image">
-                <p>imagem</p>
+                <img src={imgSignout} alt="imagem de signup" />
             </article>
             <div className="layout-signup"></div>
             <article className="signup-welcome">
@@ -70,7 +70,7 @@ export default function SignupPage() {
                 <div className="welcome-forms">
                     <form onSubmit={handleSubmitForm}>
                         <label htmlFor="fullname">
-                            <FaUser className='icon-user' />
+                            <CiUser className='icon-user' />
                             <input
                                 type="text"
                                 name="fullname"
@@ -118,7 +118,11 @@ export default function SignupPage() {
                             />
                         </label>
 
-                        {signupError && <p className="error-message" style={{ color: 'red', fontSize: '0.8rem', marginTop: '5px' }}>{signupError}</p>}
+                        <div className="privacy-notice">
+                            <p>By signing below, you agree to the <span>Team of use</span> and <span>privacy notice</span></p>
+                        </div>
+
+                        {signupError && <p className="error-message">{signupError}</p>}
                         <button type="submit">Registrar</button>
                     </form>
                     <div className="layout-forms">
@@ -128,19 +132,9 @@ export default function SignupPage() {
                             <li className='item'></li>
                         </ul>
                     </div>
-                    <div className='social-media'>
-                        <ul>
-                            <li>
-                                <img src={imgGoogle} alt="Google logo" />
-                                Google
-                            </li>
-                            <li>
-                                <img src={imgFacebook} alt="Facebook logo" />
-                                Facebook
-                            </li>
-                        </ul>
+                    <div className='already-account'>
                         <div className="has-account">
-                            <p>Já tem uma conta? <a href="#" onClick={() => navigate('/login')}>Fazer Login</a></p>
+                            <p>Already have an account?<a onClick={() => navigate('/login')}><strong>Login</strong></a></p>
                         </div>
                     </div>
                 </div>

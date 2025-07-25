@@ -4,8 +4,6 @@ import App from './App.jsx';
 import './styles/index.scss';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// Importação das páginas do aplicativo
-import Cart from './pages/cart';
 import Profile from './pages/profile';
 import HomePage from './pages/home/index.jsx';
 import LoginPage from './pages/login/index.jsx';
@@ -13,6 +11,7 @@ import LoginPage from './pages/login/index.jsx';
 // Importe o componente ProtectedRoute
 import ProtectedRoute from './ProtectedRoute.jsx';
 import SignupPage from './pages/signup/index.jsx'; // Certifique-se de que o caminho está correto
+import ForgetPassword from './pages/forgetPassword/index.jsx';
 
 // Criação do roteador com as rotas do aplicativo
 const router = createBrowserRouter([
@@ -28,6 +27,10 @@ const router = createBrowserRouter([
         element: <SignupPage />
     },
     {
+        path: '/forget-password',
+        element: <ForgetPassword />
+    },
+    {
         // Esta é a rota base para todas as páginas protegidas.
         // O element usa ProtectedRoute para garantir que o acesso seja feito apenas por usuários autenticados.
         path: '/',
@@ -36,7 +39,6 @@ const router = createBrowserRouter([
             // Rotas aninhadas que serão renderizadas dentro do <Outlet> em <App>.
             // index: true define HomePage como a rota padrão para /.
             { index: true, element: <HomePage /> },
-            { path: 'carrinho', element: <Cart /> },
             { path: 'perfil', element: <Profile /> }
         ]
     },

@@ -1,59 +1,102 @@
 import { createContext, useContext, useState } from "react";
 
-// Criação do contexto para o carrinho
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-    const [cartItems, setCartItems] = useState([]); // Estado para armazenar os itens do carrinho
+    const [cartItems, setCartItems] = useState([]);
 
-    // Função para adicionar um item ao carrinho
     const addToCart = (itemToAdd) => {
-        const checkItemAlready = cartItems.find((cartItem) => {
-            return cartItem._id === itemToAdd._id; // Verifica se o item já está no carrinho
-        });
+        setCartItems((prevItems) => {
+            // Gerar um ID único para esta instância do item, incluindo variações.
+            // É crucial que itemToAdd.options e itemToAdd.addons (ou suas variações)
+            // sejam passados para addToCart.
+            const optionsString = JSON.stringify(itemToAdd.options || []);
+            const addonsString = JSON.stringify(itemToAdd.addons || []);
+            const currentItemUniqueKey = `${itemToAdd._id}-${optionsString}-${addonsString}`;
 
-        if (!checkItemAlready) {
-            itemToAdd.quantity = 1; // Define a quantidade inicial como 1
-            setCartItems([...cartItems, itemToAdd]); // Adiciona o novo item ao carrinho
-            console.log('Item added correctly');
-        } else {
-            console.log('Item is already on cart');
-        }
+            const existingItemIndex = prevItems.findIndex(
+                (cartItem) => cartItem.uniqueKey === currentItemUniqueKey
+            );
+
+            if (existingItemIndex > -1) {
+                // Item já no carrinho (com as mesmas variações), atualiza a quantidade
+                const updatedItems = [...prevItems];
+                updatedItems[existingItemIndex] = {
+                    ...updatedItems[existingItemIndex],
+                    quantity: updatedItems[existingItemIndex].quantity + 1,
+                };
+                return updatedItems;
+            } else {
+                // Item não no carrinho ou com variações diferentes, adiciona um novo item
+                // Adicione o uniqueKey ao novo item para fácil referência e remoção
+                const newItem = {
+                    ...itemToAdd,
+                    quantity: 1,
+                    uniqueKey: currentItemUniqueKey // A chave única que identifica esta variação
+                };
+                return [...prevItems, newItem];
+            }
+        });
     };
 
-    // Função para remover um item do carrinho
-    const removeFromCart = (itemId) => {
-        const cartItemsSanitized = cartItems.filter((item) => {
-            return item._id !== itemId; // Filtra o item a ser removido
-        });
-        
-        setCartItems(cartItemsSanitized); // Atualiza o estado do carrinho
+    const removeFromCart = (uniqueKeyToRemove) => { // Agora remove pelo uniqueKey
+        const updatedCartItems = cartItems.filter((item) => item.uniqueKey !== uniqueKeyToRemove);
+        setCartItems(updatedCartItems);
     };
 
-    // Função para atualizar os itens do carrinho
+    // Nova função para aumentar a quantidade de um item no carrinho
+    const increaseQuantity = (uniqueKeyToUpdate) => {
+        setCartItems((prevItems) => {
+            return prevItems.map((item) =>
+                item.uniqueKey === uniqueKeyToUpdate
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+        });
+    };
+
+    // Nova função para diminuir a quantidade de um item no carrinho
+    const decreaseQuantity = (uniqueKeyToUpdate) => {
+        setCartItems((prevItems) => {
+            const updatedItems = prevItems.map((item) =>
+                item.uniqueKey === uniqueKeyToUpdate
+                    ? { ...item, quantity: item.quantity - 1 }
+                    : item
+            );
+            // Remove o item se a quantidade for 0 ou menos
+            return updatedItems.filter((item) => item.quantity > 0);
+        });
+    };
+
     const updateCartItems = (items) => {
         setCartItems(items);
     };
 
-    // Função para limpar o carrinho
     const clearCart = () => {
         setCartItems([]);
     };
 
     return (
-        <CartContext.Provider value={{ removeFromCart, addToCart, cartItems, updateCartItems, clearCart }}>
-            {children} 
+        <CartContext.Provider value={{
+            removeFromCart,
+            addToCart,
+            cartItems,
+            updateCartItems,
+            clearCart,
+            increaseQuantity, // Adicionado ao contexto
+            decreaseQuantity  // Adicionado ao contexto
+        }}>
+            {children}
         </CartContext.Provider>
     );
 }
 
-// Hook para acessar o contexto do carrinho
 export const useCartContext = () => {
     const context = useContext(CartContext);
 
     if (!context) {
-        console.log('You are out of CartContext');
+        throw new Error('useCartContext deve ser usado dentro de um CartProvider');
     }
 
-    return context; // Retorna o contexto
+    return context;
 };

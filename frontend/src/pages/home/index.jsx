@@ -1,64 +1,75 @@
-import React, { useState, useEffect } from 'react'; // Remova useCallback se não for usar aqui
+import React, { useState, useEffect } from 'react';
 import './index.scss';
 
-// Importações de componentes e hooks customizados
-import platesServices from '../../services/plates'; // Caminho corrigido
-import { useCartContext } from '../../contexts/useCartContext'; // Caminho corrigido
-import PlateCard from '../../components/plateCard'; // Ajuste o caminho
-import Notification from '../../components/notification'; // Ajuste o caminho
-import Loading from '../../components/loading'; // Ajuste o caminho
+import platesServices from '../../hooks/usePlates';
+import { useCartContext } from '../../contexts/useCartContext';
+import PlateCard from '../../components/plateCard';
+import Notification from '../../components/notification';
+import Loading from '../../components/loading';
 
-// Imagens
 import imgNotification from '../../assets/img/home/notification.png';
 import imgHomeLogo from '../../assets/img/home/logo-home.png';
 
 export default function HomePage() {
-    // Desestrutura os estados e funções do seu serviço de pratos
     const {
-        getAvailablePlates, // Função para buscar os pratos
-        platesLoading,     // Indica se está carregando
-        platesList,        // Lista de pratos
-        platesError        // Objeto de erro
+        getAvailablePlates,
+        platesLoading,
+        platesList,
+        platesError
     } = platesServices();
 
-    // Estado local para controlar o re-fetch dos pratos
-    // Inicia como true para garantir o carregamento na montagem inicial
     const [shouldFetchPlates, setShouldFetchPlates] = useState(true);
     const [notificationMessage, setNotificationMessage] = useState('');
     const [notificationType, setNotificationType] = useState('');
-    const { addToCart } = useCartContext(); // Use o nome correto da função do contexto
+    const { addToCart, cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCartContext(); // Adicionado increaseQuantity e decreaseQuantity
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de busca
 
-    // Efeito para carregar os pratos quando o componente monta ou 'shouldFetchPlates' é true
+    // Efeito para carregar os pratos disponíveis
     useEffect(() => {
         if (shouldFetchPlates) {
-            getAvailablePlates(); // Chama a função do hook platesServices
-            setShouldFetchPlates(false); // Reseta a flag para evitar re-fetches desnecessários
+            getAvailablePlates();
+            setShouldFetchPlates(false);
         }
-    }, [shouldFetchPlates, getAvailablePlates]); // Depende de shouldFetchPlates e da função memoizada
+    }, [shouldFetchPlates, getAvailablePlates]);
 
-    // Função para adicionar ao carrinho
+    // Lida com a adição de um prato ao carrinho
     const handleAddToCart = (plate) => {
         addToCart(plate);
         setNotificationMessage(`${plate.title} adicionado ao carrinho!`);
         setNotificationType('success');
     };
 
-    // Função para fechar a notificação
+    // Lida com a remoção de um item do carrinho
+    // Esta função agora recebe o uniqueKey para remoção, se você tiver um botão de "remover item específico"
+    const handleRemoveFromCart = (uniqueKey) => {
+        removeFromCart(uniqueKey);
+        setNotificationMessage('Item removido do carrinho.');
+        setNotificationType('info');
+    };
+
+    // Fecha as notificações
     const handleCloseNotification = () => {
         setNotificationMessage('');
         setNotificationType('');
     };
 
-    const openPlatePopup = (plate) => {
-        setSelectedPlate(plate);
-    };
+    // Filtra os pratos com base no termo de busca
+    const filteredPlates = platesList.filter(plate =>
+        plate.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        plate.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <section className="container-home">
             <article className="home-plates">
                 <div className="plates-head">
                     <img src={imgHomeLogo} alt="logotipo" className='logo-home' />
-                    <input type="text" placeholder='Search Anything Here' />
+                    <input
+                        type="text"
+                        placeholder='Search Anything Here'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                     <div className="icon">
                         <img src={imgNotification} alt="ícone de notificação" />
                     </div>
@@ -73,7 +84,7 @@ export default function HomePage() {
                         />
                     )}
 
-                    {platesError && ( // Exibe mensagem de erro se houver
+                    {platesError && (
                         <Notification
                             message={`Erro ao carregar pratos: ${platesError.message}`}
                             type="error"
@@ -85,17 +96,16 @@ export default function HomePage() {
                         <Loading />
                     ) : (
                         <div className="plates-list">
-                            {platesList && platesList.length > 0 ? (
-                                platesList.map((plateItem) => (
+                            {filteredPlates && filteredPlates.length > 0 ? (
+                                filteredPlates.map((plateItem) => (
                                     <PlateCard
                                         key={plateItem._id}
                                         plateData={plateItem}
                                         onAddToCart={handleAddToCart}
-                                        onOpenPopup={openPlatePopup}
+                                        // A prop onOpenPopup não é mais necessária aqui
                                     />
                                 ))
                             ) : (
-                                // Só mostra esta mensagem se não houver erro e a lista estiver vazia
                                 !platesError && <p>Nenhum prato disponível no momento.</p>
                             )}
                         </div>
@@ -103,14 +113,39 @@ export default function HomePage() {
                 </div>
             </article>
             <article className="home-cart">
-                <p>+</p>
-                <p>Add Product</p>
-                <p>From Special Menu</p>
+                <div className="cart-header">
+                    {cartItems.length === 0 && (
+                        <div className="cart-empty">
+                            <p>+</p>
+                            <p>Add Product</p>
+                            <p>From Special Menu</p>
+                        </div>
+                    )}
+                </div>
+                <div className="cart-items-list">
+                    {cartItems.map((item) => (
+                        <div key={item.uniqueKey} className="cart-item"> {/* Alterado para item.uniqueKey */}
+                            <img src={item.imgUrl || item.image} alt={item.title} className="cart-item-image" />
+                            <div className="cart-item-details">
+                                <h4>{item.title}</h4>
+                                {/* Assumindo que 'sale' é o preço do item */}
+                                <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5> {/* Preço total do item */}
+                            </div>
+                            <div className="item-quantity">
+                                <button onClick={() => increaseQuantity(item.uniqueKey)}>+</button> {/* Botão de Aumentar */}
+                                {item.quantity} {/* Exibe a quantidade atual do item */}
+                                <button onClick={() => decreaseQuantity(item.uniqueKey)}>-</button> {/* Botão de Diminuir */}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {cartItems.length > 0 && (
+                    <div className="cart-total">
+                        <h4>Total: R$ {cartItems.reduce((total, item) => total + (item.sale * item.quantity), 0).toFixed(2)}</h4>
+                        <button className="checkout-button">Place Order</button>
+                    </div>
+                )}
             </article>
-            {/* Você pode renderizar um PlatePopup aqui se tiver um */}
-            {/* {selectedPlate && (
-                <PlatePopup plate={selectedPlate} onClose={closePlatePopup} onAddToCart={handleAddToCart} />
-            )} */}
         </section>
     );
 }
