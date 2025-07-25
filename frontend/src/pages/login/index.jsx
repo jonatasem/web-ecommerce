@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authServices from '../../services/auth'; // <-- CORRIGIDO AQUI: 'authServices'
+import { useNavigate, Link } from 'react-router-dom';
+import authServices from '../../hooks/useAuth'; 
 import Loading from '../../components/loading';
 
 import './index.scss';
@@ -53,7 +53,7 @@ export default function LoginPage() {
             <article className="login-image">
                 <img src={imgLogin} alt="imagem de boas vindas" />
             </article>
-            <div className="layout-login"></div> {/* Verifique a necessidade deste div. Está vazio. */}
+            <div className="layout-login"></div>
             <article className="login-welcome">
                 <h2>Welcome Back!</h2>
                 <div className="welcome-forms">
@@ -82,8 +82,8 @@ export default function LoginPage() {
                                 value={formData.password}
                             />
                         </label>
-                        <a href="#">Forget Password?</a>
-                        {loginError && <p className="error-message" style={{ color: 'red', fontSize: '0.8rem', marginTop: '5px' }}>{loginError}</p>}
+                        <Link to="/forget-password">Forget Password?</Link>
+                        {loginError && <p className="error-message">{loginError}</p>}
                         <button type="submit">Login</button>
                     </form>
                     <div className="layout-forms">

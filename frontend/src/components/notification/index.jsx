@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './index.scss';
 
 export default function Notification({ message, type, onClose }) {
     useEffect(() => {
@@ -19,7 +18,7 @@ export default function Notification({ message, type, onClose }) {
     }
 
     return (
-        <div className={`notification ${type}`}>
+        <div className="sucess-message">
             <p>{message}</p>
             {onClose && (
                 <button className="close-button" onClick={onClose}>&times;</button>

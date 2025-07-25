@@ -1,7 +1,7 @@
 import { useEffect } from "react"; // Importa hook useEffect
 import { useNavigate } from "react-router-dom"; // Importa hook useNavigate para navegação
-import authServices from "../../services/auth"; // Serviço de autenticação
-import orderServices from "../../services/order"; // Serviço de pedidos
+import authServices from "../../hooks/useAuth"; // Serviço de autenticação
+import orderServices from "../../hooks/useOrders"; // Serviço de pedidos
 import { LuLogOut, LuTimer, LuAlertCircle, LuCheckCircle } from "react-icons/lu"; // Ícones
 import { Link } from "react-router-dom"; // Link para navegação
 import Loading from "../../components/loading"; // Componente de carregamento

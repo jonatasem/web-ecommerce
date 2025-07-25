@@ -7,11 +7,6 @@ export default function platesServices() {
 
     const url = `${import.meta.env.VITE_API_URL}/plates`;
 
-    /**
-     * Função memoizada para obter a lista de pratos disponíveis da API.
-     * Agora retorna uma Promise, permitindo que o chamador use 'await'.
-     * O controle de 'refetchPlates' foi movido para o componente consumidor.
-     */
     const getAvailablePlates = useCallback(async () => { // Função agora é async
         setPlatesLoading(true);
         setPlatesError(null);

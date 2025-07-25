@@ -2,7 +2,6 @@ import React from 'react'; // Importe React
 import './index.scss';
 
 import imgHeader from '../../assets/img/header/logo.png';
-
 import imgHome from '../../assets/img/header/home.png';
 import imgCustomers from '../../assets/img/header/customers.png';
 import imgDashboard from '../../assets/img/header/dashboard.png';
@@ -14,7 +13,7 @@ import imgSettings from '../../assets/img/header/setting.png';
 import imgLogout from '../../assets/img/header/logout.svg';
 
 import { Link, useNavigate } from 'react-router-dom'; // Importe useNavigate
-import authServices from '../../services/auth'; // Importe o hook authServices
+import authServices from '../../hooks/useAuth';
 
 export default function Header(){
     const { logout } = authServices(); // Chame o hook e desestruture a função logout
