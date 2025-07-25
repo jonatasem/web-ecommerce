@@ -76,14 +76,59 @@
             }
         }
     }
-
 }
 
-
-@media (max-width:1400px) {
+@media (max-width:1399px) {
     .item-plate {
+        max-width: 250px;
+
         img {
-            max-width: 100%;
+            max-width: 220px;
+        }
+    }
+}
+
+@media (max-width:1315px){
+    .item-plate {
+        margin: 0 1rem 1rem 0;
+        max-width: 220px;
+    }
+}
+
+@media (max-width:1199px) {
+    .item-plate {
+        max-width: 190px;
+    }
+}
+
+@media (max-width:499px) {
+    .item-plate {
+        width: calc(100% / 2 - 1rem);
+        max-width: none;
+
+        .plate-main {
+            h4 {
+                font-size: 14px;
+            }
+            p {
+                font-size: 14px;
+            }
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        .rating {
+            p {
+                font-size: 14px;
+            }
+        }
+
+        .plate-footer {
+            button {
+                font-size: 14px;
+            }
         }
     }
 }

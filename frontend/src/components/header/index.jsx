@@ -29,7 +29,7 @@ export default function Header(){
             <div className="logo-header">
                 <img src={imgHeader} alt="logotipo" />
             </div>
-            <ul>
+            <ul className='nav-header'>
                 <li>
                     <Link to="/">
                         <img src={imgHome} alt="item header" />
