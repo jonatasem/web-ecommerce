@@ -1,106 +1,66 @@
-import { LuShoppingCart, LuUserCircle } from "react-icons/lu"; // Importa ícones
-import { Drawer } from '@mui/material'; // Importa o componente Drawer do Material-UI
-import { useState } from 'react'; // Importa hook useState
-import { Link, useLocation } from 'react-router-dom'; // Importa o componente Link e useLocation
-import { FaGear } from "react-icons/fa6";
+import React from 'react'; // Importe React
 import './index.scss';
 
-import imgLogo from '../../assets/img/logo.png';
+import imgHeader from '../../assets/img/header/logo.png';
 
-import { MdOutlineRestaurantMenu } from "react-icons/md";
-import { CiHome } from "react-icons/ci";
+import imgHome from '../../assets/img/header/home.png';
+import imgCustomers from '../../assets/img/header/customers.png';
+import imgDashboard from '../../assets/img/header/dashboard.png';
+import imgMessage from '../../assets/img/header/message.png';
+import imgNotification from '../../assets/img/header/notification.png';
+import imgOrder from '../../assets/img/header/order.png';
+import imgProduct from '../../assets/img/header/product.png';
+import imgSettings from '../../assets/img/header/setting.png';
+import imgLogout from '../../assets/img/header/logout.svg';
 
-export default function Navbar({ totalItems }) { // Recebe o total de itens como prop
-    const [openMenu, setOpenMenu] = useState(false); // Estado para controlar a abertura do menu
-    const location = useLocation(); // Obtém a localização atual
+import { Link, useNavigate } from 'react-router-dom'; // Importe useNavigate
+import authServices from '../../services/auth'; // Importe o hook authServices
 
-    // Função para abrir ou fechar o menu lateral
-    const handleOpenMenu = () => {
-        setOpenMenu(!openMenu);
-    };
+export default function Header(){
+    const { logout } = authServices(); // Chame o hook e desestruture a função logout
+    const navigate = useNavigate(); // Inicialize useNavigate para redirecionamento
 
-    // Função para definir o título com base na rota
-    const getTitle = () => {
-        switch (location.pathname) {
-            case '/':
-                return 'Início';
-            case '/plates':
-                return 'Cardápio';
-            case '/cart':
-                return 'Carrinho';
-            case '/profile':
-                return 'Perfil';
-            case '/auth':
-                return 'Autenticação';
-            default:
-                return 'Restaurante';
-        }
+    const handleLogout = () => {
+        logout(); // Chama a função logout para remover o item do localStorage
+        navigate('/login', { replace: true }); // Redireciona para a página de login
     };
 
     return (
-        <header className="header-container">
-            <div className="layout-header">
-                <div className="layout-head">
-                    <div className="header-logo">
-                        <img src={imgLogo} alt="" />
-                    </div>
-                    <nav className="header-nav">
-                        <li>
-                            <Link to={'/'}>
-                                <CiHome className="icon" />
-                                <span>Início</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={'/perfil'}>
-                                <LuUserCircle />
-                                <span>Perfil</span>
-                            </Link>
-                        </li>
-                    </nav>
-                    <nav className="btn-cart-profile">
-                        <li className="menu-cart-number">
-                            <Link to={'/carrinho'}>
-                                <LuShoppingCart />
-                                {totalItems > 0 && <span className="cart-item-count">{totalItems}</span>}
-                            </Link>
-                        </li>
-                    </nav>
-                    <div className="header-right" onClick={handleOpenMenu}>
-                        <FaGear />
-                    </div>
-                    <Drawer
-                        anchor='left'
-                        open={openMenu}
-                        onClose={handleOpenMenu}
-                    >
-                        <div className="drawer-container">
-                            <div className="logo-drawer">
-                                <img src={imgLogo} alt="Logo Drawer" />
-                            </div>
-                            <div className="links-drawer">
-                                <Link to={'/'} onClick={handleOpenMenu}>
-                                    <CiHome className="icon" />
-                                    Início
-                                </Link>
-                                <Link to={'/perfil'}>
-                                    <LuUserCircle className="icon"/>
-                                    Perfil
-                                </Link>
-                            </div>
-                            <div className="footer-drawer">
-                                <p>Desenvolvido por Jonatas Moreira</p>
-                            </div>
-                        </div>
-                    </Drawer>
-                </div>
-                <div className="title-header">
-                    <h1><span>{getTitle()}</span> Restaurante</h1>
-                    <article className="title-pages">
-                        <p>{location.pathname.replace('/', '') || 'home'}</p> 
-                    </article>
-                </div>
+        <header className="container-header">
+            <div className="logo-header">
+                <img src={imgHeader} alt="logotipo" />
             </div>
+            <ul>
+                <li>
+                    <Link to="/">
+                        <img src={imgHome} alt="item header" />
+                    </Link>
+                </li>
+                <li>
+                    <img src={imgDashboard} alt="item header" />
+                </li>
+                <li>
+                    <img src={imgOrder} alt="item header" />
+                </li>
+                <li>
+                    <img src={imgProduct} alt="item header" />
+                </li>
+                <li>
+                    <img src={imgNotification} alt="item header" />
+                </li>
+                <li>
+                    <img src={imgCustomers} alt="item header" />
+                </li>
+                <li>
+                    <img src={imgMessage} alt="item header" />
+                </li>
+                <li>
+                    <img src={imgSettings} alt="item header" />
+                </li>
+                <li className='logout-icon' onClick={handleLogout}> {/* Chame a função handleLogout */}
+                    <img src={imgLogout} alt="ícone de logout" /> {/* Alt text mais descritivo */}
+                </li>
+            </ul>
         </header>
     );
 }

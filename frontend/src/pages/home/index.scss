@@ -1,0 +1,80 @@
+.container-home {
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    height: 1024px;
+    max-height: 100vh;
+    overflow: hidden;
+
+    li {
+        list-style-type: none;
+    }
+
+    .home-plates {
+        width: 100%;
+        max-width: 950px;
+        overflow-y: auto;
+        scrollbar-width: none;
+
+        .plates-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3.5rem;
+            align-items: center;
+
+            .logo-home {
+                width: 100%;
+                max-width: 145px;
+            }
+
+            input {
+                width: 100%;
+                max-width: 590px;
+                height: 55px;
+                padding: 0 0 0 1.5rem;
+                border-radius: 2.5rem;
+                outline: 0;
+                border: 1px solid var(--black-white);
+            }
+
+
+            .icon {
+                img {
+                    width: 100%;
+                    max-width: 45px;
+                }
+            }
+        }
+
+        .menu {
+
+            h2 {
+                margin-bottom: 1.5rem;
+            }
+
+            ul {
+                display: flex;
+                flex-wrap: wrap;
+
+                li {
+                    width: 100%;
+                    max-width: 277px;
+                    height: 367px;
+                }
+            }
+
+            .plates-list {
+                 display: flex;
+                 flex-wrap: wrap;
+            }
+        }
+    }
+
+    .home-cart {
+        width: calc(100% - 870px);
+        max-height: 100vh;
+        padding: 1.5rem;
+        background-color: whitesmoke;
+        margin: 0 0 0 1.5rem;
+    }
+}

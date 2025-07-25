@@ -1,22 +1,29 @@
-import { useEffect } from "react";
-import './index.scss'; // Certifique-se de ter um arquivo de estilo para o componente
+import { useEffect } from 'react';
+import './index.scss';
 
-export default function Notification({ message, duration = 3000, onClose }) {
+export default function Notification({ message, type, onClose }) {
     useEffect(() => {
-        if (message) {
+        // Se houver uma mensagem e uma função onClose, configure o timer
+        if (message && onClose) {
             const timer = setTimeout(() => {
-                onClose(); // Fecha a notificação após o tempo especificado
-            }, duration);
-            return () => clearTimeout(timer); // Limpa o timer ao desmontar
+                onClose(); // Chama a função onClose passada pelo pai
+            }, 3000); // Notificação desaparece após 3 segundos
+
+            // Limpa o timer se o componente for desmontado ou se as dependências mudarem
+            return () => clearTimeout(timer);
         }
-    }, [message, duration, onClose]);
+    }, [message, type, onClose]); 
+
+    if (!message) {
+        return null; // Não renderiza nada se não houver mensagem
+    }
 
     return (
-        <section className={`notification-container ${message ? 'show' : ''}`}>
-            <span>{message}</span>
-            <button className="btn-close-notification" onClick={onClose}>
-                &times;
-            </button>
-        </section>
+        <div className={`notification ${type}`}>
+            <p>{message}</p>
+            {onClose && (
+                <button className="close-button" onClick={onClose}>&times;</button>
+            )}
+        </div>
     );
 }
