@@ -48,3 +48,16 @@
         }
     }
 }
+
+@media (max-width:1099px) {
+    .container-header {
+        border: none;
+        width: 0px;
+        transition: 0.5s;
+
+        .nav-header,
+        .logo-header {
+            display: none;
+        }
+    }
+}

@@ -27,7 +27,7 @@ export default function ForgetPassword(){
                                 required
                             />
                         </label>
-                        <button type="submit">Continue</button>
+                        <button>Continue</button>
                     </form>
             </article>
         </section>

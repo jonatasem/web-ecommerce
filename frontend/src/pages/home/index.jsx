@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './index.scss';
 
 import platesServices from '../../hooks/usePlates';
@@ -124,17 +124,16 @@ export default function HomePage() {
                 </div>
                 <div className="cart-items-list">
                     {cartItems.map((item) => (
-                        <div key={item.uniqueKey} className="cart-item"> {/* Alterado para item.uniqueKey */}
+                        <div key={item.uniqueKey} className="cart-item"> 
                             <img src={item.imgUrl || item.image} alt={item.title} className="cart-item-image" />
                             <div className="cart-item-details">
                                 <h4>{item.title}</h4>
-                                {/* Assumindo que 'sale' é o preço do item */}
-                                <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5> {/* Preço total do item */}
+                                <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5> 
                             </div>
                             <div className="item-quantity">
-                                <button onClick={() => increaseQuantity(item.uniqueKey)}>+</button> {/* Botão de Aumentar */}
-                                {item.quantity} {/* Exibe a quantidade atual do item */}
-                                <button onClick={() => decreaseQuantity(item.uniqueKey)}>-</button> {/* Botão de Diminuir */}
+                                <button onClick={() => decreaseQuantity(item.uniqueKey)}>-</button>
+                                <p>{item.quantity} </p>
+                                <button onClick={() => increaseQuantity(item.uniqueKey)}>+</button> 
                             </div>
                         </div>
                     ))}

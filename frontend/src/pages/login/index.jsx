@@ -97,11 +97,11 @@ export default function LoginPage() {
                         <ul>
                             <li>
                                 <img src={imgGoogle} alt="Google logo" />
-                                Google
+                                Em breve
                             </li>
                             <li>
                                 <img src={imgFacebook} alt="Facebook logo" />
-                                Facebook
+                                Em breve
                             </li>
                         </ul>
                         <div className="dont-account">
