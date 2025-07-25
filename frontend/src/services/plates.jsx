@@ -1,40 +1,54 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
-// Serviço para gerenciamento de pratos
 export default function platesServices() {
-    const [platesLoading, setPlatesLoading] = useState(false); // Estado de carregamento dos pratos
-    const [refetchPlates, setRefetchPlates] = useState(true); // Estado para indicar necessidade de re-fetch
-    const [platesList, setPlatesList] = useState([]); // Lista de pratos disponíveis
+    const [platesLoading, setPlatesLoading] = useState(false);
+    const [platesList, setPlatesList] = useState([]);
+    const [platesError, setPlatesError] = useState(null);
 
-    const url = `${import.meta.env.VITE_API_URL}/plates`; // URL base para as requisições de pratos
+    const url = `${import.meta.env.VITE_API_URL}/plates`;
 
-    // Função para obter pratos disponíveis
-    const getAvailablePlates = () => {
+    /**
+     * Função memoizada para obter a lista de pratos disponíveis da API.
+     * Agora retorna uma Promise, permitindo que o chamador use 'await'.
+     * O controle de 'refetchPlates' foi movido para o componente consumidor.
+     */
+    const getAvailablePlates = useCallback(async () => { // Função agora é async
         setPlatesLoading(true);
-        
-        fetch(`${url}/availables`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-        })
-        .then((response) => response.json())
-        .then((result) => {
-            if(result.success) {
-                setPlatesList(result.body); // Atualiza a lista de pratos
-            } else {
-                console.log(result); // Tratamento de erro
-            }
-        })
-        .catch((error) => {
-            console.log(error); // Tratamento de erro
-        })
-        .finally(() => {
-            setPlatesLoading(false); // Atualiza o estado de carregamento
-            setRefetchPlates(false); // Atualiza estado de re-fetch
-        });
-    };
+        setPlatesError(null);
 
-    return { getAvailablePlates, platesLoading, refetchPlates, platesList }; // Retorna funções e estados
+        try {
+            const response = await fetch(`${url}/availables`, { // Usa await
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.body?.message || `Erro HTTP: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                setPlatesList(result.body);
+            } else {
+                console.error("Erro da API ao obter pratos:", result);
+                setPlatesError(new Error(result.body || "Ocorreu um erro desconhecido na API."));
+            }
+        } catch (error) {
+            console.error("Erro na requisição para obter pratos:", error);
+            setPlatesError(error); // Armazena o objeto Error completo
+        } finally {
+            setPlatesLoading(false);
+        }
+    }, [url]);
+
+    return {
+        getAvailablePlates,
+        platesLoading,
+        platesList,
+        platesError,
+    };
 }

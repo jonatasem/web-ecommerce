@@ -10,7 +10,6 @@ export default class UsersDataAccess {
         .collection(collectionName)
         .find({ })
         .toArray()
-
         return result
     }
 
@@ -18,7 +17,6 @@ export default class UsersDataAccess {
         const result = await Mongo.db
         .collection(collectionName)
         .findOneAndDelete({ _id: new ObjectId(userId) })
-
         return result
     }
 
