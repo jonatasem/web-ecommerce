@@ -105,6 +105,7 @@
     .item-plate {
         width: calc(100% / 2 - 1rem);
         max-width: none;
+        margin: 0.5rem auto;
 
         .plate-main {
             h4 {
@@ -130,5 +131,11 @@
                 font-size: 14px;
             }
         }
+    }
+}
+
+@media (max-width:399px) {
+    .item-plate {
+        padding: 0.5rem;
     }
 }
