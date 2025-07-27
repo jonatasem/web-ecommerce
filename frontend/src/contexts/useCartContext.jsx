@@ -7,18 +7,6 @@ export function CartProvider({ children }) {
 
     const addToCart = (itemToAdd) => {
         setCartItems((prevItems) => {
-            // Gerar um ID único para esta instância do item, incluindo variações.
-            // Se você quiser que diferentes instâncias do mesmo prato sejam separadas,
-            // mesmo sem opções/addons, você precisa de um uniqueKey que mude a cada adição.
-
-            // Remova a lógica de existingItemIndex se você deseja que cada clique adicione um novo item.
-            // Se você quer que o mesmo prato com as mesmas opções/addons seja agrupado,
-            // mas um clique em "adicionar" sem opções extras gere um item separado,
-            // a lógica precisaria ser mais complexa ou você usaria um uniqueKey sempre novo.
-
-            // Cenário atual: Cada clique em "Add Product" deve adicionar uma NOVA linha no carrinho,
-            // mesmo que o prato base seja o mesmo.
-            // Para isso, precisamos de um uniqueKey que seja sempre diferente.
 
             const optionsString = JSON.stringify(itemToAdd.options || []);
             const addonsString = JSON.stringify(itemToAdd.addons || []);

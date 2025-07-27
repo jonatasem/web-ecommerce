@@ -1,21 +1,24 @@
 import { useState } from 'react';
 import './index.scss';
 
-import imgHeader from '../../assets/img/header/logo.png';
-import imgHome from '../../assets/img/header/home.png';
-import imgCustomers from '../../assets/img/header/customers.png';
-import imgDashboard from '../../assets/img/header/dashboard.png';
-import imgMessage from '../../assets/img/header/message.png';
-import imgNotification from '../../assets/img/header/notification.png';
-import imgOrder from '../../assets/img/header/order.png';
-import imgProduct from '../../assets/img/header/product.png';
-import imgSettings from '../../assets/img/header/setting.png';
-import imgLogout from '../../assets/img/header/logout.svg';
+import {
+    FaHome,
+    FaTachometerAlt,
+    FaShoppingCart,
+    FaBoxOpen,
+    FaBell,
+    FaUsers,
+    FaPaperPlane,
+    FaCog,
+    FaSignOutAlt
+} from "react-icons/fa";
 
-import { Link, useNavigate } from 'react-router-dom';
+import imgHeader from '../../assets/img/header/logo.png';
+
+import { NavLink, useNavigate } from 'react-router-dom'; // Importe NavLink
 import authServices from '../../hooks/useAuth';
 import Mobile from '../mobile';
-import { Drawer } from '@mui/material'; 
+import { Drawer } from '@mui/material';
 
 export default function Header(){
     const { logout } = authServices();
@@ -28,7 +31,7 @@ export default function Header(){
 
     const handleLogout = () => {
         logout();
-        navigate('/login', { replace: true });
+        navigate('/', { replace: true });
     };
 
     return (
@@ -38,33 +41,47 @@ export default function Header(){
             </div>
             <ul className='nav-header'>
                 <li>
-                    <Link to="/">
-                        <img src={imgHome} alt="Home icon" />
-                    </Link>
+                    <NavLink to="/" activeClassName="active" end> 
+                        <FaHome />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgDashboard} alt="Dashboard icon" />
+                    <NavLink to="/dashboard" activeClassName="active">
+                        <FaTachometerAlt />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgOrder} alt="Order icon" />
+                    <NavLink to="/orders" activeClassName="active">
+                        <FaShoppingCart />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgProduct} alt="Product icon" />
+                    <NavLink to="/products" activeClassName="active">
+                        <FaBoxOpen />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgNotification} alt="Notification icon" />
+                    <NavLink to="/notification" activeClassName="active">
+                        <FaBell />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgCustomers} alt="Customers icon" />
+                    <NavLink to="/customers" activeClassName="active">
+                        <FaUsers />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgMessage} alt="Message icon" />
+                    <NavLink to="/message" activeClassName="active">
+                        <FaPaperPlane />
+                    </NavLink>
                 </li>
                 <li>
-                    <img src={imgSettings} alt="Settings icon" />
+                    <NavLink to="/settings" activeClassName="active">
+                        <FaCog />
+                    </NavLink>
                 </li>
                 <li className='logout-icon' onClick={handleLogout}>
-                    <img src={imgLogout} alt="Logout icon" />
+                    <FaSignOutAlt />
                 </li>
             </ul>
             <div className="mobile-header">
@@ -73,42 +90,56 @@ export default function Header(){
             <Drawer open={open} onClose={toggleDrawer(false)}>
                 <ul className='drawer-nav'>
                     <li>
-                        <Link to="/" onClick={toggleDrawer(false)}>
-                            <img src={imgHome} alt="Home icon" />
-                            <p>home</p>
-                        </Link>
+                        <NavLink to="/" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaHome className='icon-drawer'/>
+                            <p>Home</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgDashboard} alt="Dashboard icon" />
-                        <p>dashboard</p>
+                       <NavLink to="/dashboard" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaTachometerAlt className='icon-drawer'/>
+                            <p>Dashboard</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgOrder} alt="Order icon" />
-                        <p>order</p>
+                       <NavLink to="/orders" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaShoppingCart className='icon-drawer'/>
+                            <p>Orders</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgProduct} alt="Product icon" />
-                        <p>product</p>
+                       <NavLink to="/products" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaBoxOpen className='icon-drawer'/>
+                            <p>Products</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgNotification} alt="Notification icon" />
-                        <p>notification</p>
+                       <NavLink to="/notification" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaBell className='icon-drawer'/>
+                            <p>Notification</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgCustomers} alt="Customers icon" />
-                        <p>customers</p>
+                       <NavLink to="/customers" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaUsers className='icon-drawer'/>
+                            <p>Customers</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgMessage} alt="Message icon" />
-                        <p>message</p>
+                       <NavLink to="/message" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaPaperPlane className='icon-drawer'/>
+                            <p>Message</p>
+                        </NavLink>
                     </li>
                     <li>
-                        <img src={imgSettings} alt="Settings icon" />
-                        <p>settings</p>
+                       <NavLink to="/settings" activeClassName="active" end onClick={toggleDrawer(false)}>
+                            <FaCog className='icon-drawer'/>
+                            <p>Settings</p>
+                        </NavLink>
                     </li>
                     <li className='logout-icon' onClick={handleLogout}>
-                        <img src={imgLogout} alt="Logout icon" />
-                        <p>logout</p>
+                        <FaSignOutAlt className='icon-drawer'/>
+                        <p>Logout</p>
                     </li>
                 </ul>
             </Drawer>
