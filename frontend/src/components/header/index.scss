@@ -46,8 +46,9 @@
             &.logout-icon {
                 color: var(--black-silver); 
                 cursor: pointer; 
+                
                 &:hover {
-                    color: var(--red-color); 
+                    color: var(--orange-hover);
                 }
             }
 
@@ -59,6 +60,10 @@
 
                &.active {
                 color: var(--orange-color); 
+               }
+
+               &:hover {
+                color: var(--orange-hover);
                }
             }
         }
