@@ -1,4 +1,4 @@
-import React from 'react'; // Importe React
+import React, { useState } from 'react'; // Importe React e useState
 import './index.scss';
 
 import imgHeader from '../../assets/img/header/logo.png';
@@ -12,16 +12,23 @@ import imgProduct from '../../assets/img/header/product.png';
 import imgSettings from '../../assets/img/header/setting.png';
 import imgLogout from '../../assets/img/header/logout.svg';
 
-import { Link, useNavigate } from 'react-router-dom'; // Importe useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import authServices from '../../hooks/useAuth';
+import Mobile from '../mobile';
+import { Drawer } from '@mui/material'; // Assuming Material-UI Drawer, adjust if using a different library
 
 export default function Header(){
-    const { logout } = authServices(); // Chame o hook e desestruture a função logout
-    const navigate = useNavigate(); // Inicialize useNavigate para redirecionamento
+    const { logout } = authServices();
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(false); // State to control the Drawer's open/close status
+
+    const toggleDrawer = (newOpen) => () => { // Corrected toggleDrawer function
+        setOpen(newOpen);
+    };
 
     const handleLogout = () => {
-        logout(); // Chama a função logout para remover o item do localStorage
-        navigate('/login', { replace: true }); // Redireciona para a página de login
+        logout();
+        navigate('/login', { replace: true });
     };
 
     return (
@@ -32,34 +39,80 @@ export default function Header(){
             <ul className='nav-header'>
                 <li>
                     <Link to="/">
-                        <img src={imgHome} alt="item header" />
+                        <img src={imgHome} alt="Home icon" />
                     </Link>
                 </li>
                 <li>
-                    <img src={imgDashboard} alt="item header" />
+                    <img src={imgDashboard} alt="Dashboard icon" />
                 </li>
                 <li>
-                    <img src={imgOrder} alt="item header" />
+                    <img src={imgOrder} alt="Order icon" />
                 </li>
                 <li>
-                    <img src={imgProduct} alt="item header" />
+                    <img src={imgProduct} alt="Product icon" />
                 </li>
                 <li>
-                    <img src={imgNotification} alt="item header" />
+                    <img src={imgNotification} alt="Notification icon" />
                 </li>
                 <li>
-                    <img src={imgCustomers} alt="item header" />
+                    <img src={imgCustomers} alt="Customers icon" />
                 </li>
                 <li>
-                    <img src={imgMessage} alt="item header" />
+                    <img src={imgMessage} alt="Message icon" />
                 </li>
                 <li>
-                    <img src={imgSettings} alt="item header" />
+                    <img src={imgSettings} alt="Settings icon" />
                 </li>
-                <li className='logout-icon' onClick={handleLogout}> {/* Chame a função handleLogout */}
-                    <img src={imgLogout} alt="ícone de logout" /> {/* Alt text mais descritivo */}
+                <li className='logout-icon' onClick={handleLogout}>
+                    <img src={imgLogout} alt="Logout icon" />
                 </li>
             </ul>
+            <div className="mobile-header">
+                {/* Pass the toggleDrawer function to the Mobile component */}
+                <Mobile toggleDrawer={toggleDrawer(true)}/>
+            </div>
+            <Drawer open={open} onClose={toggleDrawer(false)}>
+                <ul className='drawer-nav'>
+                    <li>
+                        <Link to="/" onClick={toggleDrawer(false)}> {/* Close drawer on link click */}
+                            <img src={imgHome} alt="Home icon" />
+                            <p>home</p>
+                        </Link>
+                    </li>
+                    <li>
+                        <img src={imgDashboard} alt="Dashboard icon" />
+                        <p>dashboard</p>
+                    </li>
+                    <li>
+                        <img src={imgOrder} alt="Order icon" />
+                        <p>order</p>
+                    </li>
+                    <li>
+                        <img src={imgProduct} alt="Product icon" />
+                        <p>product</p>
+                    </li>
+                    <li>
+                        <img src={imgNotification} alt="Notification icon" />
+                        <p>notification</p>
+                    </li>
+                    <li>
+                        <img src={imgCustomers} alt="Customers icon" />
+                        <p>customers</p>
+                    </li>
+                    <li>
+                        <img src={imgMessage} alt="Message icon" />
+                        <p>message</p>
+                    </li>
+                    <li>
+                        <img src={imgSettings} alt="Settings icon" /> {/* Corrected alt text */}
+                        <p>settings</p>
+                    </li>
+                    <li className='logout-icon' onClick={handleLogout}>
+                        <img src={imgLogout} alt="Logout icon" />
+                        <p>logout</p>
+                    </li>
+                </ul>
+            </Drawer>
         </header>
     );
 }

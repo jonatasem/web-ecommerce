@@ -71,7 +71,7 @@ export default function HomePage() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <div className="icon">
-                        <img src={imgNotification} alt="ícone de notificação" />
+                        <img src={imgNotification} alt="ícone de notificação" className='icon-notification'/>
                     </div>
                 </div>
                 <div className="menu">
@@ -102,7 +102,6 @@ export default function HomePage() {
                                         key={plateItem._id}
                                         plateData={plateItem}
                                         onAddToCart={handleAddToCart}
-                                        // A prop onOpenPopup não é mais necessária aqui
                                     />
                                 ))
                             ) : (
@@ -122,13 +121,15 @@ export default function HomePage() {
                         </div>
                     )}
                 </div>
-                <div className="cart-items-list">
+                <div className="cart-list">
                     {cartItems.map((item) => (
                         <div key={item.uniqueKey} className="cart-item"> 
-                            <img src={item.imgUrl || item.image} alt={item.title} className="cart-item-image" />
-                            <div className="cart-item-details">
-                                <h4>{item.title}</h4>
-                                <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5> 
+                            <div className="cart-details">
+                                <img src={item.imgUrl || item.image} alt={item.title} className="cart-item-image" />
+                                <div className="cart-item-details">
+                                    <h4>{item.title}</h4>
+                                    <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5> 
+                                </div>
                             </div>
                             <div className="item-quantity">
                                 <button onClick={() => decreaseQuantity(item.uniqueKey)}>-</button>

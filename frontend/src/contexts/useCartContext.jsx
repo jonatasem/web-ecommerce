@@ -8,43 +8,39 @@ export function CartProvider({ children }) {
     const addToCart = (itemToAdd) => {
         setCartItems((prevItems) => {
             // Gerar um ID único para esta instância do item, incluindo variações.
-            // É crucial que itemToAdd.options e itemToAdd.addons (ou suas variações)
-            // sejam passados para addToCart.
+            // Se você quiser que diferentes instâncias do mesmo prato sejam separadas,
+            // mesmo sem opções/addons, você precisa de um uniqueKey que mude a cada adição.
+
+            // Remova a lógica de existingItemIndex se você deseja que cada clique adicione um novo item.
+            // Se você quer que o mesmo prato com as mesmas opções/addons seja agrupado,
+            // mas um clique em "adicionar" sem opções extras gere um item separado,
+            // a lógica precisaria ser mais complexa ou você usaria um uniqueKey sempre novo.
+
+            // Cenário atual: Cada clique em "Add Product" deve adicionar uma NOVA linha no carrinho,
+            // mesmo que o prato base seja o mesmo.
+            // Para isso, precisamos de um uniqueKey que seja sempre diferente.
+
             const optionsString = JSON.stringify(itemToAdd.options || []);
             const addonsString = JSON.stringify(itemToAdd.addons || []);
-            const currentItemUniqueKey = `${itemToAdd._id}-${optionsString}-${addonsString}`;
+            
+            // Gerar um uniqueKey sempre novo para cada adição.
+            // Isso garantirá que cada clique em "Add Product" crie uma nova entrada no carrinho.
+            const newUniqueKey = `${itemToAdd._id}-${optionsString}-${addonsString}-${Date.now()}`;
 
-            const existingItemIndex = prevItems.findIndex(
-                (cartItem) => cartItem.uniqueKey === currentItemUniqueKey
-            );
-
-            if (existingItemIndex > -1) {
-                // Item já no carrinho (com as mesmas variações), atualiza a quantidade
-                const updatedItems = [...prevItems];
-                updatedItems[existingItemIndex] = {
-                    ...updatedItems[existingItemIndex],
-                    quantity: updatedItems[existingItemIndex].quantity + 1,
-                };
-                return updatedItems;
-            } else {
-                // Item não no carrinho ou com variações diferentes, adiciona um novo item
-                // Adicione o uniqueKey ao novo item para fácil referência e remoção
-                const newItem = {
-                    ...itemToAdd,
-                    quantity: 1,
-                    uniqueKey: currentItemUniqueKey // A chave única que identifica esta variação
-                };
-                return [...prevItems, newItem];
-            }
+            const newItem = {
+                ...itemToAdd,
+                quantity: 1, // Sempre começa com 1 para um novo item
+                uniqueKey: newUniqueKey // A chave única que identifica esta variação/instância
+            };
+            return [...prevItems, newItem];
         });
     };
 
-    const removeFromCart = (uniqueKeyToRemove) => { // Agora remove pelo uniqueKey
+    const removeFromCart = (uniqueKeyToRemove) => {
         const updatedCartItems = cartItems.filter((item) => item.uniqueKey !== uniqueKeyToRemove);
         setCartItems(updatedCartItems);
     };
 
-    // Nova função para aumentar a quantidade de um item no carrinho
     const increaseQuantity = (uniqueKeyToUpdate) => {
         setCartItems((prevItems) => {
             return prevItems.map((item) =>
@@ -55,7 +51,6 @@ export function CartProvider({ children }) {
         });
     };
 
-    // Nova função para diminuir a quantidade de um item no carrinho
     const decreaseQuantity = (uniqueKeyToUpdate) => {
         setCartItems((prevItems) => {
             const updatedItems = prevItems.map((item) =>
@@ -63,7 +58,6 @@ export function CartProvider({ children }) {
                     ? { ...item, quantity: item.quantity - 1 }
                     : item
             );
-            // Remove o item se a quantidade for 0 ou menos
             return updatedItems.filter((item) => item.quantity > 0);
         });
     };
@@ -83,8 +77,8 @@ export function CartProvider({ children }) {
             cartItems,
             updateCartItems,
             clearCart,
-            increaseQuantity, // Adicionado ao contexto
-            decreaseQuantity  // Adicionado ao contexto
+            increaseQuantity,
+            decreaseQuantity
         }}>
             {children}
         </CartContext.Provider>
