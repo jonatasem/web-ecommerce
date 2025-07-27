@@ -16,14 +16,13 @@
 
     .logo-header {
         border-bottom: 1px solid var(--black-white);
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
+        padding-bottom: 0.5rem;
         width: 100%;
         text-align: center;
 
         img {
             width: 100%;
-            max-width: 45px; 
+            max-width: 35px; 
         }
     }
 
@@ -37,8 +36,7 @@
 
         li {
             width: 100%;
-            font-size: 35px; 
-            margin-bottom: 1rem; 
+            font-size: 30px;
             text-align: center; 
 
             &:last-child {
@@ -92,8 +90,6 @@
         }
     }
 
-    
-    
     .MuiDrawer-paper {
         width: 250px; 
         box-sizing: border-box; 
@@ -103,14 +99,12 @@
     .drawer-nav {
         display: flex;
         flex-direction: column;
-        gap: 1rem; 
-        margin: 1rem 0; 
-        padding: 0; 
+        gap: 0.5rem;
+        padding: 0;
 
         li {
             display: flex;
-            align-items: center; 
-            margin: 0.5rem 0; 
+            align-items: center;
 
             a {
                 text-transform: capitalize; 
@@ -125,7 +119,7 @@
                 transition: background-color 0.2s ease, color 0.2s ease; 
 
                 .icon-drawer {
-                    margin-right: 1rem;
+                    margin-right: 0.5rem;
                 }
 
                 p {
@@ -153,10 +147,6 @@
             border-radius: 5px;
             transition: background-color 0.2s ease, color 0.2s ease;
             font-size: 18px; 
-
-            .icon-drawer {
-                margin-right: 1rem;
-            }
 
             p {
                 margin: 0;
