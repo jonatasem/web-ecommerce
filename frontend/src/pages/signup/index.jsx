@@ -48,7 +48,7 @@ export default function SignupPage() {
 
         if (result.success) {
             console.log('Registro bem-sucedido!', result.user);
-            navigate('/', { replace: true });
+            navigate('/login', { replace: true });
         } else {
             console.error('Falha no registro:', result.message);
             setSignupError(result.message || 'Ocorreu um erro inesperado no registro. Tente novamente.');

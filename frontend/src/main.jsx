@@ -12,17 +12,15 @@ import LoginPage from './pages/login/index.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import SignupPage from './pages/signup/index.jsx'; // Certifique-se de que o caminho está correto
 import ForgetPassword from './pages/forgetPassword/index.jsx';
+import DashboardPage from './pages/dashboard/index.jsx';
 
 // Criação do roteador com as rotas do aplicativo
 const router = createBrowserRouter([
     {
-        // Rota pública para a página de login.
         path: '/login',
         element: <LoginPage />
-        // Removido: children: [{path: 'signup', element: <SignupPage />}] - AGORA É UMA ROTA SEPARADA
     },
     {
-        // Rota separada para a página de registro (Signup)
         path: '/signup',
         element: <SignupPage />
     },
@@ -36,10 +34,10 @@ const router = createBrowserRouter([
         path: '/',
         element: <ProtectedRoute><App /></ProtectedRoute>,
         children: [
-            // Rotas aninhadas que serão renderizadas dentro do <Outlet> em <App>.
-            // index: true define HomePage como a rota padrão para /.
             { index: true, element: <HomePage /> },
-            { path: 'perfil', element: <Profile /> }
+            { path: '/perfil', element: <Profile /> },
+
+            { path: '/dashboard', element: <DashboardPage /> }
         ]
     },
 
