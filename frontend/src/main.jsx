@@ -4,17 +4,20 @@ import App from './App.jsx';
 import './styles/index.scss';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Profile from './pages/profile';
 import HomePage from './pages/home/index.jsx';
 import LoginPage from './pages/login/index.jsx';
 
-// Importe o componente ProtectedRoute
 import ProtectedRoute from './ProtectedRoute.jsx';
-import SignupPage from './pages/signup/index.jsx'; // Certifique-se de que o caminho está correto
+import SignupPage from './pages/signup/index.jsx'; 
 import ForgetPassword from './pages/forgetPassword/index.jsx';
 import DashboardPage from './pages/dashboard/index.jsx';
+import OrdersPage from './pages/orders/index.jsx';
+import ProductsPage from './pages/products/index.jsx';
+import NotificationPage from './pages/notification/index.jsx';
+import CustomersPage from './pages/customers/index.jsx';
+import MessagePage from './pages/message/index.jsx';
+import SettingsPage from './pages/settings/index.jsx';
 
-// Criação do roteador com as rotas do aplicativo
 const router = createBrowserRouter([
     {
         path: '/login',
@@ -35,8 +38,12 @@ const router = createBrowserRouter([
         element: <ProtectedRoute><App /></ProtectedRoute>,
         children: [
             { index: true, element: <HomePage /> },
-            { path: '/perfil', element: <Profile /> },
-
+            { path: '/settings', element: <SettingsPage /> },
+            { path: '/message', element: <MessagePage /> },
+            { path: '/customers', element: <CustomersPage /> },
+            { path: '/notification', element: <NotificationPage /> },
+            { path: '/products', element: <ProductsPage /> },
+            { path: '/orders', element: <OrdersPage /> },
             { path: '/dashboard', element: <DashboardPage /> }
         ]
     },
