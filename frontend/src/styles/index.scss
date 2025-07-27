@@ -31,23 +31,32 @@ body {
 	text-align: center;
 }
 
-.error-message {
+.error-message,
+.sucess-message {
 	position: absolute;
-	top: 10px;
-	right: 10px;
-	background-color: red;
-	padding: 0.2rem;
-	z-index: 99;
+	top: 0;
+	right: 0;
+	z-index: 9;
+	padding: 0.5rem 1rem;
+	border-radius: 0.2rem;
+	display: flex;
+	color: white;
+	align-items: center;
+
+	button {
+		margin-left: 0.5rem;
+		background-color: transparent;
+		color: white;
+		border: transparent;
+		font-size: 20px;
+		cursor: pointer;
+	}
+}
+
+.error-message {
+	background-color: #ff0000c9;
 }
 
 .sucess-message {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	background-color: green;
-	color: white;
-	z-index: 99;
-	display: flex;
-	align-items: center;
-	padding: 0.2rem;
+	background-color: #008000b2;
 }
