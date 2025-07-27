@@ -21,8 +21,8 @@ export default function HomePage() {
     const [shouldFetchPlates, setShouldFetchPlates] = useState(true);
     const [notificationMessage, setNotificationMessage] = useState('');
     const [notificationType, setNotificationType] = useState('');
-    const { addToCart, cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCartContext(); // Adicionado increaseQuantity e decreaseQuantity
-    const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de busca
+    const { addToCart, cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCartContext();
+    const [searchTerm, setSearchTerm] = useState('');
 
     // Efeito para carregar os pratos disponíveis
     useEffect(() => {

@@ -2,7 +2,6 @@ import './index.scss';
 import { FaStar } from "react-icons/fa";
 
 export default function PlateCard({ plateData, onAddToCart }) {
-    const urlDefault =` ${import.meta.env.VITE_URL_IMAGES}/`;
 
     // Função para lidar com o clique no botão "Add Product"
     const handleAddClick = (event) => {
@@ -21,7 +20,7 @@ export default function PlateCard({ plateData, onAddToCart }) {
 
     return (
         <article className='item-plate'>
-            <img src={urlDefault + plateData.imgUrl} alt="imagem do prato" />
+            <img src={plateData.imgUrl} alt="imagem do prato" />
             <div className='plate-main'>
                 <h4>{plateData.title}</h4>
                 <p>${plateData.sale}</p>
