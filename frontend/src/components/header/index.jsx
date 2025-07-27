@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Importe React e useState
+import { useState } from 'react';
 import './index.scss';
 
 import imgHeader from '../../assets/img/header/logo.png';
@@ -15,14 +15,14 @@ import imgLogout from '../../assets/img/header/logout.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import authServices from '../../hooks/useAuth';
 import Mobile from '../mobile';
-import { Drawer } from '@mui/material'; // Assuming Material-UI Drawer, adjust if using a different library
+import { Drawer } from '@mui/material'; 
 
 export default function Header(){
     const { logout } = authServices();
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false); // State to control the Drawer's open/close status
+    const [open, setOpen] = useState(false);
 
-    const toggleDrawer = (newOpen) => () => { // Corrected toggleDrawer function
+    const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
 
@@ -68,13 +68,12 @@ export default function Header(){
                 </li>
             </ul>
             <div className="mobile-header">
-                {/* Pass the toggleDrawer function to the Mobile component */}
                 <Mobile toggleDrawer={toggleDrawer(true)}/>
             </div>
             <Drawer open={open} onClose={toggleDrawer(false)}>
                 <ul className='drawer-nav'>
                     <li>
-                        <Link to="/" onClick={toggleDrawer(false)}> {/* Close drawer on link click */}
+                        <Link to="/" onClick={toggleDrawer(false)}>
                             <img src={imgHome} alt="Home icon" />
                             <p>home</p>
                         </Link>
@@ -104,7 +103,7 @@ export default function Header(){
                         <p>message</p>
                     </li>
                     <li>
-                        <img src={imgSettings} alt="Settings icon" /> {/* Corrected alt text */}
+                        <img src={imgSettings} alt="Settings icon" />
                         <p>settings</p>
                     </li>
                     <li className='logout-icon' onClick={handleLogout}>
