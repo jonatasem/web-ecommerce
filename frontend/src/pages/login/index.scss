@@ -86,6 +86,10 @@
                     color: var(--white-color);
                     border: transparent;
                     border-radius: 0.5rem;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
 

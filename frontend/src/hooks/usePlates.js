@@ -5,14 +5,15 @@ export default function platesServices() {
     const [platesList, setPlatesList] = useState([]);
     const [platesError, setPlatesError] = useState(null);
 
+    // Ensure VITE_API_URL is correctly defined in your .env file
     const url = `${import.meta.env.VITE_API_URL}/plates`;
 
-    const getAvailablePlates = useCallback(async () => { // Função agora é async
+    const getAvailablePlates = useCallback(async () => {
         setPlatesLoading(true);
-        setPlatesError(null);
+        setPlatesError(null); // Clear previous errors
 
         try {
-            const response = await fetch(`${url}/availables`, { // Usa await
+            const response = await fetch(`${url}/availables`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,8 +21,10 @@ export default function platesServices() {
             });
 
             if (!response.ok) {
+                // Attempt to parse error message from response body
                 const errorData = await response.json();
-                throw new Error(errorData.body?.message || `Erro HTTP: ${response.status}`);
+                // Prioritize specific message, then generic HTTP status
+                throw new Error(errorData.body?.message || `HTTP error! Status: ${response.status}`);
             }
 
             const result = await response.json();
@@ -29,12 +32,12 @@ export default function platesServices() {
             if (result.success) {
                 setPlatesList(result.body);
             } else {
-                console.error("Erro da API ao obter pratos:", result);
-                setPlatesError(new Error(result.body || "Ocorreu um erro desconhecido na API."));
+                console.error("API error fetching plates:", result);
+                setPlatesError(new Error(result.body?.message || "An unknown API error occurred."));
             }
         } catch (error) {
-            console.error("Erro na requisição para obter pratos:", error);
-            setPlatesError(error); // Armazena o objeto Error completo
+            console.error("Request error fetching plates:", error);
+            setPlatesError(error); // Store the full Error object
         } finally {
             setPlatesLoading(false);
         }

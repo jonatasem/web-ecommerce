@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import './index.scss';
 
 import platesServices from '../../hooks/usePlates';
+import orderServices from '../../hooks/useOrders'; // Importa o hook de ordens
 import { useCartContext } from '../../contexts/useCartContext';
+import { useAuthContext } from '../../contexts/useAuthContext'; // Importa o AuthContext
+
 import PlateCard from '../../components/plateCard';
 import Notification from '../../components/notification';
 import Loading from '../../components/loading';
@@ -18,13 +21,16 @@ export default function HomePage() {
         platesError
     } = platesServices();
 
+    const { sendOrder, orderLoading } = orderServices(); // Obtém a função sendOrder e o estado de carregamento
+    const { currentUser, isAuthenticated } = useAuthContext(); // Obtém o usuário logado e o status de autenticação
+
     const [shouldFetchPlates, setShouldFetchPlates] = useState(true);
     const [notificationMessage, setNotificationMessage] = useState('');
     const [notificationType, setNotificationType] = useState('');
-    const { addToCart, cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCartContext();
+    const { addToCart, cartItems, increaseQuantity, decreaseQuantity, clearCart } = useCartContext(); // Adicionado clearCart
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Efeito para carregar os pratos disponíveis
+    // Effect to load available plates
     useEffect(() => {
         if (shouldFetchPlates) {
             getAvailablePlates();
@@ -32,32 +38,67 @@ export default function HomePage() {
         }
     }, [shouldFetchPlates, getAvailablePlates]);
 
-    // Lida com a adição de um prato ao carrinho
+    // Handles adding a plate to the cart
     const handleAddToCart = (plate) => {
         addToCart(plate);
         setNotificationMessage(`${plate.title} adicionado ao carrinho!`);
         setNotificationType('success');
     };
 
-    // Lida com a remoção de um item do carrinho
-    // Esta função agora recebe o uniqueKey para remoção, se você tiver um botão de "remover item específico"
-    const handleRemoveFromCart = (uniqueKey) => {
-        removeFromCart(uniqueKey);
-        setNotificationMessage('Item removido do carrinho.');
-        setNotificationType('info');
-    };
-
-    // Fecha as notificações
+    // Closes notifications
     const handleCloseNotification = () => {
         setNotificationMessage('');
         setNotificationType('');
     };
 
-    // Filtra os pratos com base no termo de busca
+    // Filters plates based on the search term
     const filteredPlates = platesList.filter(plate =>
         plate.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         plate.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // --- Nova função para finalizar o pedido ---
+    const handlePlaceOrder = async () => {
+        if (!isAuthenticated || !currentUser?._id) { // Verifica se o usuário está logado e tem um ID
+            setNotificationMessage('Você precisa estar logado para fazer um pedido!');
+            setNotificationType('warning');
+            return;
+        }
+
+        if (cartItems.length === 0) {
+            setNotificationMessage('Seu carrinho está vazio. Adicione itens antes de fazer um pedido.');
+            setNotificationType('warning');
+            return;
+        }
+
+        const orderTotal = cartItems.reduce((total, item) => total + (item.sale * item.quantity), 0);
+
+        const orderPayload = {
+            userId: currentUser._id, // PEGA O ID DO USUÁRIO AQUI!
+            items: cartItems.map(item => ({
+                plateId: item._id,
+                quantity: item.quantity,
+                price: item.sale,
+                // Inclua outras propriedades do item que seu backend espera
+                options: item.options || [],
+                addons: item.addons || []
+            })),
+            total: orderTotal,
+            status: 'Pendente' // Status inicial do pedido
+        };
+
+        try {
+            await sendOrder(orderPayload);
+            setNotificationMessage('Pedido realizado com sucesso!');
+            setNotificationType('success');
+            clearCart(); // Limpa o carrinho após o pedido ser enviado com sucesso
+        } catch (error) {
+            setNotificationMessage(`Falha ao realizar pedido: ${error.message}`);
+            setNotificationType('error');
+            console.error('Erro ao enviar pedido:', error);
+        }
+    };
+    // --- Fim da nova função ---
 
     return (
         <section className="container-home">
@@ -123,18 +164,18 @@ export default function HomePage() {
                 </div>
                 <div className="cart-list">
                     {cartItems.map((item) => (
-                        <div key={item.uniqueKey} className="cart-item"> 
+                        <div key={item.uniqueKey} className="cart-item">
                             <div className="cart-details">
                                 <img src={item.imgUrl || item.image} alt={item.title} className="cart-item-image" />
                                 <div className="cart-item-details">
                                     <h4>{item.title}</h4>
-                                    <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5> 
+                                    <h5>R$ {(item.sale * item.quantity).toFixed(2)}</h5>
                                 </div>
                             </div>
                             <div className="item-quantity">
                                 <button onClick={() => decreaseQuantity(item.uniqueKey)}>-</button>
                                 <p>{item.quantity} </p>
-                                <button onClick={() => increaseQuantity(item.uniqueKey)}>+</button> 
+                                <button onClick={() => increaseQuantity(item.uniqueKey)}>+</button>
                             </div>
                         </div>
                     ))}
@@ -142,7 +183,14 @@ export default function HomePage() {
                 {cartItems.length > 0 && (
                     <div className="cart-total">
                         <h4>Total: R$ {cartItems.reduce((total, item) => total + (item.sale * item.quantity), 0).toFixed(2)}</h4>
-                        <button className="checkout-button">Place Order</button>
+                        {/* Botão para finalizar o pedido */}
+                        <button
+                            className="checkout-button"
+                            onClick={handlePlaceOrder}
+                            disabled={orderLoading || !isAuthenticated || cartItems.length === 0}
+                        >
+                            {orderLoading ? 'Enviando Pedido...' : 'Place Order'}
+                        </button>
                     </div>
                 )}
             </article>

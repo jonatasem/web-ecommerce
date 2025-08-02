@@ -1,22 +1,22 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient } from 'mongodb';
 
 export const Mongo = {
+    client: null,
+    db: null,
+
     async connect({ mongoConnectionString, mongoDbName }) {
+        if (this.client && this.client.isConnected()) {
+            return;
+        }
+
         try {
+            const client = new MongoClient(mongoConnectionString);
+            await client.connect();
 
-            const client = new MongoClient(mongoConnectionString)
-
-            await client.connect()
-
-            const db = client.db(mongoDbName)
-
-            this.client = client
-            this.db = db
-
-            return 'Connected to mongo!'
-
+            this.client = client;
+            this.db = client.db(mongoDbName);
         } catch (error) {
-            return { text: 'Error during mongo connection', error }
+            throw new Error('Error during mongo connection');
         }
     }
-}
+};

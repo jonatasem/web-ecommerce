@@ -126,6 +126,7 @@
                     display: flex;
                     align-items: center;
 
+
                     button {
                         height: 20px;
                         width: 20px;
@@ -149,6 +150,12 @@
         .cart-total {
             bottom: 1.5rem;
             width: 100%;
+            margin: 0 auto;
+            text-align: center;
+
+            h4 {
+                text-align: start;
+            }
 
             button {
                 width: 100%;
@@ -161,6 +168,10 @@
                 font-weight: 800;
                 border-radius: 0.5rem;
                 border: transparent;
+                
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
     }

@@ -3,18 +3,18 @@ import { FaStar } from "react-icons/fa";
 
 export default function PlateCard({ plateData, onAddToCart }) {
 
-    // Função para lidar com o clique no botão "Add Product"
+    // Function to handle the "Add Product" button click
     const handleAddClick = (event) => {
-        event.stopPropagation(); // Impede que o clique se propague
+        event.stopPropagation(); // Prevents the click from propagating
 
         if (onAddToCart) {
-            // Garante que options e addons são arrays, mesmo que vazios
+            // Ensures options and addons are arrays, even if empty
             const itemToAddToCart = {
                 ...plateData,
-                options: plateData.options || [], // Se plateData.options for undefined/null, use um array vazio
-                addons: plateData.addons || []   // Se plateData.addons for undefined/null, use um array vazio
+                options: plateData.options || [], // If plateData.options is undefined/null, use an empty array
+                addons: plateData.addons || []   // If plateData.addons is undefined/null, use an empty array
             };
-            onAddToCart(itemToAddToCart); // Chama a função passada via prop com os dados do prato ajustados
+            onAddToCart(itemToAddToCart); // Calls the function passed via prop with the adjusted plate data
         }
     };
 
@@ -28,7 +28,7 @@ export default function PlateCard({ plateData, onAddToCart }) {
             <p>{plateData.description}</p>
             <div className="rating">
                 <FaStar className='icon'/>
-                <p>5.0</p>
+                <p>5.0</p> {/* Consider making this dynamic based on plateData if available */}
             </div>
             <div className='plate-footer'>
                 <button onClick={handleAddClick}>+ Add Product</button>

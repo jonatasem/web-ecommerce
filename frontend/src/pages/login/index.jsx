@@ -5,12 +5,10 @@ import Loading from '../../components/loading';
 
 import './index.scss';
 
-// Imagens
 import imgLogin from '../../assets/img/login/login.png';
 import imgGoogle from '../../assets/img/login/google.svg';
 import imgFacebook from '../../assets/img/login/facebook.svg';
 
-// react-icons
 import {
     CiLock,
     CiAt
@@ -33,10 +31,9 @@ export default function LoginPage() {
         e.preventDefault();
         setLoginError('');
 
-        const result = await login(formData); // Aguarda o resultado do login
+        const result = await login(formData);
 
         if (result.success) {
-            console.log('Login bem-sucedido!', result.user);
             navigate('/', { replace: true });
         } else {
             console.error('Falha no login:', result.message);
