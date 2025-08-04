@@ -30,6 +30,7 @@ class OrdersController {
             const result = await ordersService.addOrder(req.body);
             successResponse(res, { text: 'Order added', order: result }, 201);
         } catch (error) {
+            console.error('Error adding order:', error);
             errorResponse(res, 'Error adding order', 500);
         }
     }
@@ -41,7 +42,7 @@ class OrdersController {
         }
         try {
             const result = await ordersService.deleteOrder(id);
-            if (result) {
+            if (result.value) {
                 successResponse(res, { text: 'Order deleted' });
             } else {
                 errorResponse(res, 'Order not found', 404);

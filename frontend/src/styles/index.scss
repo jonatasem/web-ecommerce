@@ -1,3 +1,10 @@
+
+
+@use './authPage.scss';
+@use './loginPage.scss';
+@use './signupPage.scss';
+@use './plateCard.scss';
+
 :root {
     --white-color: #ffffff;
     --white-ice: #f5f5f5;
@@ -23,42 +30,39 @@ body {
 	background-color: var(--color-white);
 }
 
+li {
+	list-style-type: none;
+}
+
 .app-container {
 	display: flex;
 }
 
-
-.page-not-found {
-	margin: 2rem auto;
-	text-align: center;
+//error message
+.error-message {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	font-size: 12px;
+	color: red;
 }
 
-.error-message,
-.sucess-message {
-	position: fixed;
-	top: 0;
-	right: 0;
-	z-index: 9;
-	padding: 0.5rem 1rem;
-	border-radius: 0.2rem;
+//notification component
+.notification-component {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+
+.notification-message {
 	display: flex;
-	color: white;
 	align-items: center;
 
 	button {
 		margin-left: 0.5rem;
 		background-color: transparent;
-		color: white;
+		color: orange;
+		font-size: 25px;
 		border: transparent;
-		font-size: 20px;
-		cursor: pointer;
 	}
-}
-
-.error-message {
-	background-color: #ff0000c9;
-}
-
-.sucess-message {
-	background-color: #008000b2;
 }

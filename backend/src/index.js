@@ -2,10 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import { Mongo } from './database/mongo.js';
 import { config } from 'dotenv';
+import passport from 'passport'; // Importa o Passport
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
 import platesRouter from './routes/plates.js';
 import ordersRouter from './routes/orders.js';
+
+// Importa a lógica que configura a estratégia 'local' do Passport
+import './auth/authStrategy.js'; // Ajustei o nome do arquivo para maior clareza
 
 config();
 
@@ -25,9 +29,14 @@ async function main() {
         process.exit(1);
     }
 
+    // Middlewares
     app.use(express.json());
     app.use(cors());
 
+    // Inicializa o Passport. Isso deve vir antes das rotas que o utilizam.
+    app.use(passport.initialize());
+
+    // Rotas da API
     app.get('/', (req, res) => {
         res.send({
             success: true,

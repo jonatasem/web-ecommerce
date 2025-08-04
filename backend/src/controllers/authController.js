@@ -40,13 +40,19 @@ class AuthController {
     }
 
     login(req, res, next) {
-        passport.authenticate('local', (err, user) => {
+        passport.authenticate('local', (err, user, info) => {
             if (err) {
                 return next(err);
             }
             if (!user) {
-                return errorResponse(res, 'Invalid credentials', 401);
+                // info.message contém a mensagem de erro do Passport ('Incorrect email' ou 'Incorrect password')
+                return errorResponse(res, info.message, 401);
             }
+            
+            // Retira a senha e o salt do objeto do usuário
+            delete user.password;
+            delete user.salt;
+            
             const token = jwt.sign(user, 'secret');
             successResponse(res, { text: 'User logged in successfully', user, token });
         })(req, res, next);

@@ -9,12 +9,25 @@ class OrdersService {
     }
 
     async getOrdersByUserId(userId) {
+        // Correção: Envolve o userId em um ObjectId
         return await Mongo.db.collection(collectionName).find({ userId: new ObjectId(userId) }).toArray();
     }
 
     async addOrder(orderData) {
-        const result = await Mongo.db.collection(collectionName).insertOne(orderData);
-        return result.ops[0];
+        // Correção: Adiciona um ObjectId para o userId e para cada plateId nos itens
+        const formattedOrderData = {
+            ...orderData,
+            userId: new ObjectId(orderData.userId),
+            items: orderData.items.map(item => ({
+                ...item,
+                plateId: new ObjectId(item.plateId)
+            }))
+        };
+        const result = await Mongo.db.collection(collectionName).insertOne(formattedOrderData);
+        if (result.acknowledged) {
+            return { ...formattedOrderData, _id: result.insertedId };
+        }
+        return null;
     }
 
     async deleteOrder(orderId) {

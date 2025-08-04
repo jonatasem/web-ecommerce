@@ -1,0 +1,17 @@
+
+.on-account,
+.has-account {
+    width: 100%;
+    text-align: center;
+
+    p {
+        font-size: 16px;
+
+        a {
+            color: var(--orange-color);
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    }
+}
