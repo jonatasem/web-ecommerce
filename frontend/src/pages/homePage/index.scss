@@ -1,0 +1,188 @@
+.container-home {
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    height: 1024px;
+    max-height: 100vh;
+    overflow: hidden;
+
+    li {
+        list-style-type: none;
+    }
+
+    .home-plates {
+        width: 100%;
+        max-width: 950px;
+        overflow-y: auto;
+        scrollbar-width: none;
+
+        .plates-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3.5rem;
+            align-items: center;
+
+            .logo-home {
+                width: 100%;
+                max-width: 145px;
+            }
+
+            input {
+                width: calc(100% - 190px - 2rem);
+                max-width: 590px;
+                height: 55px;
+                padding: 0 0 0 1.5rem;
+                border-radius: 2.5rem;
+                outline: 0;
+                border: 1px solid var(--black-white);
+            }
+
+
+            .icon {
+                width: 45px;
+            }
+        }
+
+        .menu {
+            h2 {
+                margin-bottom: 1.5rem;
+            }
+
+            ul {
+                display: flex;
+                flex-wrap: wrap;
+
+                li {
+                    width: 100%;
+                    max-width: 277px;
+                    height: 367px;
+                }
+            }
+
+            .plates-list {
+                 display: flex;
+                 flex-wrap: wrap;
+                 margin: 0 auto;
+                 width: 100%;
+                 justify-content: center;
+            }
+        }
+    }
+
+    //home cart
+    .home-cart {
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem;
+        background-color: whitesmoke;
+        margin: 0 0 0 1.5rem;
+
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            .cart-empty {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                height: 500px;
+                max-width: 100vh;
+            }
+
+        }
+
+        .cart-list {
+            .cart-item {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 1rem 0;
+
+               .cart-details {
+                    display: flex;
+
+                    img {
+                        width: 100%;
+                        max-width: 55px;
+                        height: 40px;
+                        margin-right: 1rem;
+                    }
+
+                    .cart-item-details {
+                        width: 100%;
+
+                        h4 {
+                            min-width: max-content;
+                        }
+
+                        h5 {
+                            color: var(--orange-color);
+                            font-size: 16px;
+                            font-weight: 800;
+                            min-width: max-content;
+                        }
+                    }
+               }
+                .item-quantity {
+                    display: flex;
+                    align-items: center;
+
+
+                    button {
+                        height: 20px;
+                        width: 20px;
+                        border-radius: 1rem;
+                        border: transparent;
+                        cursor: pointer;
+
+                        &:last-child {
+                            background-color: var(--orange-color);
+                            color: white;
+                        }
+                    }
+
+                    p {
+                        margin: 0 0.5rem;
+                    }
+                }
+            }
+        }
+
+        .cart-total {
+            bottom: 1.5rem;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+
+            h4 {
+                text-align: start;
+            }
+
+            button {
+                width: 100%;
+                height: 60px;
+                max-width: 250px;
+                margin: 1rem auto 0;
+                background-color: var(--orange-color);
+                color: white;
+                font-size: 18px;
+                font-weight: 800;
+                border-radius: 0.5rem;
+                border: transparent;
+                
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+
+@media(max-width:768px){
+    .container-home {
+        flex-direction: column;
+        max-height: none;
+    }
+}

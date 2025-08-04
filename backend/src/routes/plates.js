@@ -1,37 +1,13 @@
-import express from 'express'
-import PlatesControllers from '../controllers/plates.js'
+import express from 'express';
+import platesController from '../controllers/platesController.js';
 
-const platesRouter = express.Router()
-const platesControllers = new PlatesControllers()
+const platesRouter = express.Router();
 
-platesRouter.get('/', async (req, res) => {
-    const { body, success, statusCode } = await platesControllers.getPlates()
-    res.status(statusCode).send({ body, success, statusCode })
-})
+platesRouter.get('/', platesController.getPlates);
+platesRouter.get('/availables', platesController.getAvailablePlates);
+platesRouter.get('/:id', platesController.getPlateById);
+platesRouter.post('/', platesController.addPlate);
+platesRouter.delete('/:id', platesController.deletePlate);
+platesRouter.put('/:id', platesController.updatePlate);
 
-platesRouter.get('/availables', async (req, res) => {
-    const { body, success, statusCode } = await platesControllers.getAvailablePlates()
-    res.status(statusCode).send({ body, success, statusCode })
-})
-
-platesRouter.get('/:id', async (req, res) => { 
-    const { body, success, statusCode } = await platesControllers.getPlateById(req.params.id)
-    res.status(statusCode).send({ body, success, statusCode })
-})
-
-platesRouter.post('/', async (req, res) => {
-    const { body, success, statusCode } = await platesControllers.addPlate(req.body)
-    res.status(statusCode).send({ body, success, statusCode })
-})
-
-platesRouter.delete('/:id', async (req, res) => {
-    const { body, success, statusCode } = await platesControllers.deletePlate(req.params.id)
-    res.status(statusCode).send({ body, success, statusCode })
-})
-
-platesRouter.put('/:id', async (req, res) => {
-    const { body, success, statusCode } = await platesControllers.updatePlate(req.params.id, req.body)
-    res.status(statusCode).send({ body, success, statusCode })
-})
-
-export default platesRouter
+export default platesRouter;

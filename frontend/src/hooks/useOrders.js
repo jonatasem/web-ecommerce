@@ -1,64 +1,42 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { apiRequest } from '../service/api/fetch.js';
 
-// Serviço para gerenciamento de pedidos
-export default function orderServices() {
-    const [orderLoading, setOrderLoading] = useState(false); // Estado de carregamento dos pedidos
-    const [refetchOrders, setRefetchOrders] = useState(true); // Estado para indicar necessidade de re-fetch
-    const [ordersList, setOrdersList] = useState([]); // Lista de pedidos do usuário
+export default function useOrderServices() {
+    const [orderLoading, setOrderLoading] = useState(false);
+    const [ordersList, setOrdersList] = useState([]);
+    const [ordersError, setOrdersError] = useState(null);
 
-    const url = $`{import.meta.env.VITE_API_URL}/orders`; // URL base para as requisições de pedidos
-
-    // Função para obter pedidos do usuário
-    const getUserOrders = (userId) => {
+    const getUserOrders = useCallback(async (userId) => {
         setOrderLoading(true);
+        setOrdersError(null);
+        try {
+            const result = await apiRequest(`/orders/userorders/${userId}`);
+            setOrdersList(result.body);
+        } catch (error) {
+            setOrdersError(error);
+            console.error("Request error fetching user orders:", error);
+        } finally {
+            setOrderLoading(false);
+        }
+    }, []);
 
-        fetch(`${url}/userorders/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.success) {
-                    setOrdersList(result.body); // Atualiza a lista de pedidos
-                } else {
-                    console.log(result); // Tratamento de erro
-                }
-            })
-            .catch((error) => {
-                console.log(error); // Tratamento de erro
-            })
-            .finally(() => {
-                setOrderLoading(false); // Atualiza o estado de carregamento
-                setRefetchOrders(false); // Atualiza estado de re-fetch
-            });
-    };
-
-    // Função para enviar um novo pedido
-    const sendOrder = (orderData) => {
+    const sendOrder = useCallback(async (orderData) => {
         setOrderLoading(true);
-
-        fetch(`${url}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(orderData)
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                console.log(result); // Log do resultado do pedido
-            })
-            .catch((error) => {
-                console.log(error); // Tratamento de erro
-            })
-            .finally(() => {
-                setOrderLoading(false); // Atualiza o estado de carregamento
+        setOrdersError(null);
+        try {
+            const result = await apiRequest('/orders', {
+                method: 'POST',
+                body: JSON.stringify(orderData)
             });
-    };
+            return { success: true, data: result.body };
+        } catch (error) {
+            setOrdersError(error);
+            console.error("Request error sending order:", error);
+            return { success: false, message: error.message };
+        } finally {
+            setOrderLoading(false);
+        }
+    }, []);
 
-    return { getUserOrders, orderLoading, refetchOrders, ordersList, sendOrder }; // Retorna funções e estados
+    return { getUserOrders, orderLoading, ordersList, ordersError, sendOrder };
 }
