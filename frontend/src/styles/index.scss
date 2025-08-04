@@ -47,22 +47,11 @@ li {
 	color: red;
 }
 
-//notification component
 .notification-component {
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
-}
-
-.notification-message {
+	background-color: #049c04;
+	padding: 0.5rem;
+	color: white;
 	display: flex;
 	align-items: center;
-
-	button {
-		margin-left: 0.5rem;
-		background-color: transparent;
-		color: orange;
-		font-size: 25px;
-		border: transparent;
-	}
+	font-size: 12px;
 }

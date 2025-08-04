@@ -17,8 +17,8 @@ export default function NotificationComponent({ message, type, onClose }) {
     const className = `notification-message ${type}`;
 
     return (
-        <div className={`notification-page ${className}`}>
-            <p>{message}</p>
+        <div className={className}>
+            <p className='notification-component'>{message}</p>
             {onClose && (
                 <button className="close-button" onClick={onClose}>&times;</button>
             )}

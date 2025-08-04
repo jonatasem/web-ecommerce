@@ -184,5 +184,10 @@
     .container-home {
         flex-direction: column;
         max-height: none;
+        height: auto;
+
+        .home-cart {
+            margin: 0 auto;
+        }
     }
 }

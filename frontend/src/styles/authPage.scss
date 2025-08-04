@@ -105,30 +105,6 @@
                     }
                 }
             }
-            .social-media {
-                ul {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 2rem;
-
-                    li {
-                        width: 100%;
-                        max-width: 199px;
-                        height: 60px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border: 1px solid var(--black-white);
-                        border-radius: 0.5rem;
-
-                        img {
-                            width: 100%;
-                            max-width: 30px;
-                            margin-right: 0.5rem;
-                        }
-                    }
-                }
-            }
         }
     }
 }
@@ -162,14 +138,7 @@
                     button {
                         height: 50px;
                     }
-                }   
-                .social-media {
-                    ul {
-                        li {
-                            max-width: 180px;
-                        }
-                    }
-                }
+                }  
             }
 
         }
@@ -208,9 +177,9 @@
 }
 
 
-
 @media (max-width:899px){
     .auth-page {
         flex-direction: column;
+        max-height: none;
     }
 }
