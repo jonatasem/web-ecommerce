@@ -1,4 +1,29 @@
 
+.social-media {
+    ul {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+
+        li {
+            width: 100%;
+            max-width: 199px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--black-white);
+            border-radius: 0.5rem;
+
+            img {
+                width: 100%;
+                max-width: 30px;
+                margin-right: 0.5rem;
+            }
+        }
+    }
+            }
+
 .on-account,
 .has-account {
     width: 100%;
@@ -12,6 +37,27 @@
             font-weight: 800;
             font-size: 16px;
             cursor: pointer;
+        }
+    }
+}
+
+
+@media (max-width:1399px) {
+    .social-media {
+        ul {
+            li {
+                max-width: 180px;
+            }
+        }
+    }
+}
+
+@media (max-width:1099px) {
+    .social-media {
+        ul {
+            li {
+                max-width: 140px;
+            }
         }
     }
 }
